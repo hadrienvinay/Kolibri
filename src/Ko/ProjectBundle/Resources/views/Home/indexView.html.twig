@@ -1,0 +1,81 @@
+{% include "::layout.html.twig" %}
+
+{% block content %}
+
+    <div id="wrapper" style="text-align: center;padding: 2%;">
+    <div class="col-lg-12" style="text-align: center;">
+        {#<img src="{{ asset('images/banner.png') }}" >    banner image #}
+    </div>
+    <hr>
+    <div class="row" >
+        <div class="col-lg-6">
+
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h2>Je suis Producteur</h2>
+                </div>
+                <div class="panel-body">
+                    Déposer votre annonce<br>
+                    Recevez des propositions<br>
+                    Validez, et c'est parti<br>
+                </div>
+                <div class="panel-footer">
+                    <a href="" class="btn btn-success btn-lg">Proposer une annonce</a>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h2>Je souhaite livrer</h2>
+                </div>
+                <div class="panel-body">
+                    Précisez votre trajet<br>
+                    Consultez les offres<br>
+                    Validez, et en route <br>
+                </div>
+                <div class="panel-footer">
+                    <a href="" class="btn btn-info btn-lg">Effectuer un trajet</a>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <div class="row">
+            <div class="col-lg-4">
+                Solidaire
+            </div>
+            <div class="col-lg-4">
+                Sécurisé
+            </div>
+            <div class="col-lg-4">
+                Ecologique
+            </div>
+        </div>
+
+
+        <hr>
+        <div class="row">
+            <h1>Une solution, deux offres adaptées</h1>
+            <div class="col-lg-6">
+                Covoiturage
+                <ul>
+                    <li>Peu couteux</li>
+                    <li>Assurances incluses</li>
+                    <li>Basé sur un modèle vérifié</li>
+                </ul>
+            </div>
+            <div class="col-lg-6">
+                Livraison Groupée
+                <ul>
+                    <li>Fiable</li>
+                    <li>Partenaires Professionnels</li>
+                    <li>Mise en commun </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

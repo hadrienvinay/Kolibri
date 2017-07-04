@@ -1,0 +1,37 @@
+{# app/Resources/views/layout.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+  {% include'::header.html.twig' only %}
+</head>
+
+<body class="body">
+
+    <header class="navbar navbar-default navbar-static-top header" style="background-image: url('{{ asset('images/header.png') }}');">
+            <div class="nav navbar-top-links navbar-right" >
+                <div class="dropdown-toggle" style="padding-top: 10%; padding-right: 2em;">
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    Connecté en tant que {{ app.user.username }}
+                    <a class="btn btn-primary btn-lg" href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+                {% else %}
+                    <a class="btn btn-outline btn-success btn-lg" style="margin-right: 1em;" href="{{ path('fos_user_registration_register') }}" >Inscription »</a>
+                    <a class="btn btn-outline btn-primary btn-lg" href="{{ path('fos_user_security_login') }}">Connexion</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="nav navbar-top-links navbar-left">
+
+        <img src="{{ asset('images/logo.png') }}">
+        </div>
+    </header>
+
+{% block content %} {% endblock %}
+
+{% block javascripts %}
+    {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+{% endblock %}
+
+</body>
+</html>

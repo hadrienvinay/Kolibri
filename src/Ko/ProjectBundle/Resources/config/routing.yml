@@ -1,0 +1,7 @@
+ko_project_homepage:
+    path:     /home
+    defaults: { _controller: KoProjectBundle:Project:index }
+
+ko_project_accueil:
+    path:     /p
+    defaults: { _controller: KoProjectBundle:Project:accueil }
