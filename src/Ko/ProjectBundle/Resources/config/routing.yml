@@ -3,5 +3,9 @@ ko_project_homepage:
     defaults: { _controller: KoProjectBundle:Project:index }
 
 ko_project_accueil:
-    path:     /p
+    path:     /
     defaults: { _controller: KoProjectBundle:Project:accueil }
+
+ko_project_liste:
+    path:     /liste
+    defaults: { _controller: KoProjectBundle:ProjectAffichage:liste }

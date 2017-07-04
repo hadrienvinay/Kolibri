@@ -1,0 +1,27 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}KoProjectBundle:ProjectAffichage:liste{% endblock %}
+
+{% block content %}
+<div id="wrapper" style="text-align: center;padding: 2%; margin-left: 15%;" >
+<h1>Liste des annonces</h1>
+    {% for annonce in annonces %}
+        <div class="col-lg-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    {{ annonce.content }} le {{ annonce.date | date("d/m/Y") }}
+                </div>
+                <div class="panel-body">
+                    <p> Auteur</p>
+                </div>
+                <div class="panel-footer">
+                    De {{ annonce.startPlace }} à {{ annonce.arrivalPlace }}
+                </div>
+            </div>
+        </div>
+
+
+    {% endfor %}
+
+</div>
+{% endblock %}
