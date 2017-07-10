@@ -20,7 +20,7 @@ class SecurityController extends Controller
     {
         // Si le visiteur est déjà identifié, on le redirige vers l'accueil
         if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return $this->render('KoProjectBundle:layout.html.twig');
+            return $this->render('KoProjectBundle:Home:indexView.html.twig');
         }
         // Le service authentication_utils permet de récupérer le nom d'utilisateur
         // et l'erreur dans le cas où le formulaire a déjà été soumis mais était invalide
@@ -35,9 +35,11 @@ class SecurityController extends Controller
 
     public function utilisateurAction(){
 
-        $user = $this->getDoctrine()->getManager()->getRepository(User::class);
+        $user = $this->getDoctrine()->getManager()->getRepository('KoUserBundle:User');
 
-
+        return $this->render('@KoUser/layout.html.twig', array(
+            'users' => $user,
+        ));
 
     }
 }

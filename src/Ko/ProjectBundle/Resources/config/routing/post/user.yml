@@ -1,0 +1,7 @@
+ko_project_create_post:
+    path:     /create
+    defaults: { _controller: KoProjectBundle:ProjectAffichage:create }
+
+ko_project_liste:
+    path:     /list
+    defaults: { _controller: KoProjectBundle:ProjectAffichage:liste }

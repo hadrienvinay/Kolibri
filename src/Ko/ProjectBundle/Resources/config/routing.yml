@@ -6,6 +6,11 @@ ko_project_accueil:
     path:     /
     defaults: { _controller: KoProjectBundle:Project:accueil }
 
-ko_project_liste:
-    path:     /liste
-    defaults: { _controller: KoProjectBundle:ProjectAffichage:liste }
+ko_user_test:
+    path:    /showw
+    defaults: {_controller: KoUserBundle:Security:utilisateur}
+
+bo_ilproject_post:
+    resource: "routing/post/user.yml"
+    prefix:   /post
+

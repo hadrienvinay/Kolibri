@@ -26,6 +26,7 @@ class Annonce
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $author;
+
     /**
      * @var string
      *
@@ -156,4 +157,29 @@ class Annonce
     {
         return $this->arrivalPlace;
     }
+
+    /**
+     * Set author
+     *
+     * @param \Ko\UserBundle\Entity\User $author
+     *
+     * @return Annonce
+     */
+    public function setAuthor(\Ko\UserBundle\Entity\User $author)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \Ko\UserBundle\Entity\User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
 }
