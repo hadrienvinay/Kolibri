@@ -7,10 +7,13 @@ ko_project:
     resource: "@KoProjectBundle/Resources/config/routing.yml"
     prefix:   /
 
+ko_user_bundle:
+    resource: "@KoUserBundle/Resources/config/routing.yml"
+    prefix: /
+
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
-
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"

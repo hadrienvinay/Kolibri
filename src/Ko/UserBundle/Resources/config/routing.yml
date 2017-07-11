@@ -1,3 +1,3 @@
-ko_project_utilisateur:
+ko_user_utilisateur:
     path:     /show
     defaults: { _controller: KoUserBundle:Security:utilisateur }

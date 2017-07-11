@@ -1,0 +1,70 @@
+{% extends "::layout.html.twig" %}
+
+{% block content %}
+
+    <header id="topbar" class="alt" style="margin-left:350px;">
+        <div class="topbar-left">
+            <ol class="breadcrumb">
+                <li class="crumb-active" >
+                    <a> Gestion des utilisateurs </a>
+                </li>
+            </ol>
+        </div>
+    </header>
+
+    <section id="content" class="animated fadeIn" style="margin-left:350px;">
+        <div class="admin-panels">
+            <div class="row">
+                <!-- mark column with required admin-grid class -->
+                <div class="col-md-12 admin-grid">
+                    <div class="panel" id="p1">
+                        <div class="panel-heading">
+
+                            <form class="form-inline" >
+                                <div class="form-group">
+                                    <label for="searchDatatable">Rechercher</label>
+                                    <input type="text" id="searchDatatable" class="form-control" />
+                                </div>
+                                <div class="form-group pull-right">
+                                    {% if is_granted('create', app.user) %}
+                                        <a class="btn btn-primary" href="{{ path("bo_iluser_useradd") }}" >Ajouter un utilisateur</a>
+                                    {% endif %}
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="panel-body">
+                            <table class="table datatable">
+                                <thead>
+                                <tr>
+                                    <th>Mail</th>
+                                    <th>Nom</th>
+                                    <th>Roles</th>
+                                    <th>Modif</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in users %}
+                                    <tr>
+                                        <td>{{ user.email }} </td>
+                                        <td>{{ user.username }} </td>
+                                        <td> {% if is_granted('ROLE_ADMIN') %} Admin
+                                             {% elseif is_granted('ROLE_USER') %} User
+                                             {% else %} Anonyme
+                                             {% endif %}</td>
+
+                                        <td>
+                                                <a class="btn btn-default btn-sm" href="">Modifier</a>
+                                                <a class="btn btn-default btn-sm" href="" >Supprimer</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

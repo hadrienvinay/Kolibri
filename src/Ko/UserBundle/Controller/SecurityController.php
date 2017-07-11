@@ -11,6 +11,7 @@ namespace Ko\UserBundle\Controller;
 
 use Ko\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 
@@ -33,13 +34,14 @@ class SecurityController extends Controller
         ));
     }
 
-    public function utilisateurAction(){
-
-        $user = $this->getDoctrine()->getManager()->getRepository('KoUserBundle:User');
-
-        return $this->render('@KoUser/layout.html.twig', array(
+    public function utilisateurAction()
+    {
+        $userManger = $this->get('fos_user.user_manager');
+        $user = $userManger->findUsers();
+        return $this->render('@KoUser/User/listUser.html.twig', array(
             'users' => $user,
         ));
 
     }
+
 }
