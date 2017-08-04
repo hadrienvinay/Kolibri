@@ -53,7 +53,7 @@ class RegistrationController extends BaseController
                 );
 
                 if (null === $response = $event->getResponse()) {
-                    $url = $this->generateUrl('fos_user_registration_confirmed');
+                    $url = $this->generateUrl('ko_project_accueil');
                     $response = new RedirectResponse($url);
                 }
 
