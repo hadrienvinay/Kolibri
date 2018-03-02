@@ -2,52 +2,46 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
-    - { resource: "@KoProjectBundle/Resources/config/services.yml" }
-    - { resource: "@KoUserBundle/Resources/config/services.yml" }
+    - { resource: "@KoMainBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
 
-fos_user:
-    db_driver: orm
-    firewall_name: main
-    user_class: Ko\UserBundle\Entity\User
-    from_email:
-        address: hadrien.vinay@yahoo.fr
-        sender_name: Hadrien
-    registration:
-        form:
-            name: app_user_registration
 framework:
     #esi: ~
-    translator: { fallback: %locale% }
+    #translator: { fallbacks: ['%locale%'] }
     secret: '%secret%'
     router:
-        resource: '%kernel.root_dir%/config/routing.yml'
+        resource: '%kernel.project_dir%/app/config/routing.yml'
         strict_requirements: ~
     form: ~
     csrf_protection: ~
     validation: { enable_annotations: true }
     #serializer: { enable_annotations: true }
-    templating:
-        engines: ['twig']
     default_locale: '%locale%'
     trusted_hosts: ~
-    trusted_proxies: ~
     session:
-        # handler_id set to null will use default session handler from php.ini
-        handler_id: ~
+        # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id: session.handler.native_file
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
     fragments: ~
     http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+    templating:
+        engines: ['twig']
+    translator:      { fallbacks: ["%locale%"] }
 
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
+    cache: false
     strict_variables: '%kernel.debug%'
     form_themes:
-          - 'bootstrap_3_layout.html.twig'
+              - 'bootstrap_3_layout.html.twig'
 
 # Doctrine Configuration
 doctrine:
@@ -61,7 +55,7 @@ doctrine:
         charset: UTF8
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
-        #     e.g. database_path: '%kernel.root_dir%/data/data.db3'
+        #     e.g. database_path: '%kernel.project_dir%/var/data/data.sqlite'
         #   2. Uncomment database_path in parameters.yml.dist
         #   3. Uncomment next line:
         #path: '%database_path%'
@@ -79,8 +73,30 @@ swiftmailer:
     password: '%mailer_password%'
     spool: { type: memory }
 
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: AppBundle\Entity\User
+    from_email:
+        address: hadrien.vinay@yahoo.fr
+        sender_name: Hadrien
+    registration:
+        form:
+            type: AppBundle\Form\RegisterType
+    service:
+        mailer: fos_user.mailer.twig_swift
+
+   #manage update file in web directory
 assetic:
     debug:          '%kernel.debug%'
     use_controller: '%kernel.debug%'
     filters:
         cssrewrite: ~
+
+ivory_google_map:
+    map:
+        debug: "%kernel.debug%"
+        language: "%locale%"
+        api_key: AIzaSyDGumVlc4KEBNmAwrso9w5faYMf62JXLBU
+
+#AIzaSyDGumVlc4KEBNmAwrso9w5faYMf62JXLBU     id api google maps

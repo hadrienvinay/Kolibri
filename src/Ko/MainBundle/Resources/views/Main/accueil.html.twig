@@ -1,0 +1,177 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <body id="page-top">
+
+    <!-- Header -->
+    <header class="masthead bg-primary text-white text-center" id="div1">
+        <div class="container" style="margin-top: -11%;">
+            <h3 class="text-uppercase mb-0">La livraison de vos colis à petit prix</h3>
+            <hr class="star-light">
+            <h4 class="font-weight-light mb-0"> Notre objectif ? <br>Mettre en relation les producteurs et les commerçants en proposant des solutions de livraison collaboratives et éco-responsables.</h4>
+            <div class="container">
+                <div class="row main">
+                    <div class="main-login main-center">
+                        <h5>Effectuez un trajet</h5>
+
+                        <!--   <form id="form-trip-search" method="post" action="{{ path('ko_main_annonces') }}">
+                            <div class="form-group">
+                                <label for="name" class="cols-sm-2 control-label pull-left">D'où partez-vous ? </label>
+                                <div class="cols-sm-10" style="padding-left: 38%;">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-car fa" aria-hidden="true"></i></span>
+                                        <input class="form-control" type="text" id="trip-depart" name="depart" placeholder="Départ"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="cols-sm-2 control-label pull-left">Ou allez-vous ?</label>
+                                <div class="cols-sm-10" style="padding-left: 38%;">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-flag fa" aria-hidden="true"></i></span>
+                                        <input class="form-control" type="text" id="trip-arrivee" name="arrivee" placeholder="Arrivée"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                          <!--  <div class="form-group">
+                                <label for="username" class="cols-sm-2 control-label pull-left">Quel détour acceptez-vous de faire ? </label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-check-circle-o fa" aria-hidden="true"></i></span>
+                                        <input type="text" class="form-control"  placeholder="Distance de détour"/>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group ">
+                                <input class="btn btn-default btn-lg btn-block login-button" type="submit" id="trip-submit" name="submit" value="Rechercher"/>
+                            </div>
+                        </form>-->
+
+                            <form id="form-trip-search" method="post" action="{{ path('ko_main_annonces') }}">
+                                {{ form_errors(form) }}
+                                <div class="form-group">
+                                    <label for="name" class="cols-sm-2 control-label pull-left">D'où partez-vous ? </label>
+                                    <div class="cols-sm-10" style="padding-left: 38%;">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-car fa" aria-hidden="true"></i></span>
+                                            {{ form_widget(form.depart,{'id' : 'trip-depart'}) }}
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email" class="cols-sm-2 control-label pull-left">Ou allez-vous ?</label>
+                                    <div class="cols-sm-10" style="padding-left: 38%;">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-flag fa" aria-hidden="true"></i></span>
+                                            {{ form_widget(form.arrivee,{'id' : 'trip-depart'}) }}
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group ">
+                                    <input class="btn btn-default btn-lg btn-block login-button" type="submit" id="trip-submit" name="submit" value="Rechercher"/>
+                                </div>
+                                {{ form_rest(form) }}
+
+                                {{ form_end(form) }}
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+
+    <!-- About Section -->
+    <section class="bg-primary text-white mb-0" id="about">
+        <div class="container">
+            <h2 class="text-center text-uppercase text-white ">Comment ça fonctionne?</h2>
+            <a class="btn btn-xl btn-outline-light text-align-center btnsec" id="livr">
+                <i class="mr-2"></i>
+                <h4>Je suis livreur</h4>
+            </a>
+            <a class="btn btn-xl btn-outline-light pull-right btnsec" id="prod">
+                <i class="mr-2"></i>
+                <h4>Je suis producteur</h4>          </a>
+            <hr class="star-light mb-5">
+            <div class="row" id="livrtxt">
+                <div class="col-lg-4 ml-auto">
+                    <p class="lead">
+                        J'effectue un trajet en voiture d'une ville à une autre<br> <br>
+                        Je souhaite amortir le coût de ce trajet <br><br>
+                        J'ai de la place dans mon coffre<br><br>
+
+
+                    </p>
+                </div>
+                <div class="col-lg-4 mr-auto">
+                    <p class="lead">
+                        Je suis prêt à prendre en charge les produits d'un producteur<br><br>
+                        Je suis prêt à réaliser un détour pour réaliser la livraison<br><br>
+                        J'effectue la livraison sur mon trajet</p>
+                </div>
+            </div>
+
+            <div class="row" id="prodtxt">
+                <div class="col-lg-4 ml-auto">
+                    <p class="lead">
+                        Je cherche à livrer mes produits à des clients<br><br>
+                        Je souhaite développer mon réseau de clients<br><br>
+                        Le livreur prend en charge ma commande
+
+
+
+                    </p>
+                </div>
+                <div class="col-lg-4 mr-auto">
+                    <p class="lead">   Je cherche à économiser de l'argent sur la livraison<br><br>
+                        Je gagne du temps sur la livraison des colis<br><br>
+                        Mon client est livré de manière rapide et solidaire
+                    </p>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="text-center text-uppercase text-secondary mb-0">Pourquoi nous choisir ?
+            </h2>
+            <div class="row">
+                <div class="egFZ"><div class="_25VI"><div class="_1ASz"><div class="_1P9G _1EvE"></div><i class="fa fa-handshake-o iconsk fa-3x" aria-hidden="true"></i>
+                            <h3>Solidaire</h3><p>Nous proposons une solution solidaire utilisant un moyen de partage de véhicule solidaire : le covoiturage</p></div><div class="_1ASz"><div class="_1P9G _3Ojp"></div>
+                            <i class="fa fa-shield iconsk fa-3x" ></i>
+                            <h3>Sécurisé</h3><p>Avec nos assurances, le transport des colis est assuré à 100% jusqu'à leur arrivée à destination</p></div><div class="_1ASz"><div class="_1P9G RkxU"></div>
+                            <i class="fa fa-pagelines iconsk fa-3x" aria-hidden="true"></i>
+                            <h3>Ecologique</h3><p>Participons à la protection de l'environnement en économisant de l'essence et en polluant moins</p></div></div><div class="_2UcC _1YJb"><div><div class="_15DX"></div></div></div></div>
+
+                <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
+                <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
+
+            </div>
+        </div>
+    </section>
+
+    </body>
+
+    <!--  Maps jqery api autocomplete   -->
+        {{ ivory_google_api([
+        form.depart.vars['autocomplete'],
+        form.arrivee.vars['autocomplete']
+        ]) }}
+
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends 'base.html.twig' %}
+{% block title %}Kolibri Profil{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {% if user.id ==  app.user.id %}
+            <h3 class="jumbotron-heading">
+                Votre Profil
+                <a class="btn btn-outline btn-default btn-lg" href="{{ path('ko_main_profiledit',{'id' : user.id}) }}">Modifier mon profil <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+            </h3>
+        {% else %}
+            <h3 class="jumbotron-heading">
+                Profil de : {{ user.username }}
+             <a class="btn btn-outline btn-default btn-lg" href="">Contacter <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a>
+            </h3>
+        {% endif %}
+
+    {% else %}
+        <h3 class="jumbotron-heading">Profil de : {{ user.username }}</h3>
+    {% endif %}
+
+
+    <section class="well col-lg-6">
+            <div style="float: left; margin-right: 2%;">
+                <img style="max-width: 200px;border-radius: 68%;max-height: 200px;" src="{{ asset("uploads/profil/"~user.picture) }}"/>
+            </div>
+                <h3>{{ user.firstName }} {{ user.lastName }}
+                {% if user.type == 2 %}
+                    <i>Producteur</i>
+                {% else %}
+                     <i>Conducteur</i>
+                {% endif %}
+                </h3>
+            <p class="lead text-muted">{{ user.description }}</p>
+
+
+    </section>
+
+        <!-- affiche les demandes en cours du producteur si c'est un profl producteur -->
+{% if user.producerId != null %}
+        <div class=" col-lg-6">
+            {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+                {% if user.id == app.user.id %}
+                    <h3 class="jumbotron-heading margin-center"><a href="{{ path('ko_main_demandes') }}">Mes demandes</a></h3>
+                    {% if user.producerId.tripId is empty %}
+                        <h4 class="jumbotron-heading margin-center">Aucune annonce postée pour le moment
+                            <br>
+                            <a href="{{ path('ko_main_addannonce') }}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Nouvelle Annonce</a></h4>
+                    {% endif %}
+                {% else %}
+                    <h3 class="jumbotron-heading">Ses demandes</h3>
+                    {% if user.producerId.tripId is empty %}
+                        <h4 class="jumbotron-heading margin-center">Aucune annonce postée par ce producteur pour le moment</h4>
+                    {% endif %}
+                {% endif %}
+                {% endif %}
+            {% for trip in user.producerId.tripId %}
+                <div class=" well">
+                    {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+                    {% if user.id == app.user.id %}
+                        <a id="reference_delete" href="{{ path('ko_main_deleteannonce', {'id': trip.id}) }}" class="" data-id="{{ loop.index }}" data-value="{{ trip.id }}"><button class="confirm-delete btn btn-danger"  style="float: right;"><span class="glyphicon glyphicon-remove"></span></button></a>
+                        <a href="{{ path('ko_main_editannonce', {'id': trip.id}) }}"><button class="btn btn-warning" style="float: right; margin-right: 1%;"><span class="glyphicon glyphicon-pencil"></span></button></a>
+                    {% endif %}
+                    {% endif %}
+                    <a href="{{ path('ko_main_detail_annonce', {'id': trip.id}) }}" >
+                        <h3 class="panel-title">{{ trip.typeProduct }}</h3>
+                    </a>
+
+                    <p>  {% if trip.sizeCar == 0 %}
+                            <img src="{{ asset("images/carSize0.png") }}" class="img-responsive car-size-img float-right">
+
+                        {% elseif trip.sizeCar == 1 %}
+                            <img src="{{ asset( "images/carSize1.png" ) }}" class="img-responsive car-size-img float-right">
+
+                        {% elseif trip.sizeCar == 2 %}
+                            <img src="{{ asset( "images/carSize2.png" ) }}" class="img-responsive car-size-img float-right">
+
+                        {% else %}
+                            <img src="{{ asset( "images/carSizeDefault.png" ) }}" class="img-responsive car-size-img float-right">
+
+                        {% endif %}
+                    </p>
+                    <p> {{ trip.addressDeparture }} - {{ trip.addressArrival }} </p>
+                    <p> {{ trip.dateBegin | date("d M") }} - {{ trip.dateBegin | date('H \\h i') }} </p>
+                    <p> {{ trip.dateEnd | date("d M") }} - {{ trip.dateEnd | date('H \\h i') }} </p>
+                </div>
+            {% endfor %}
+
+        </div>
+    {%  endif %}
+        <div id="myModal" class="modal panel" style="margin-right: 25%;margin-left: 25%;margin-top: 12%;margin-bottom: 15%;">
+            <div class="modal-header">
+                <a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
+                <h3>Supprimer</h3>
+            </div>
+            <div class="modal-body">
+                <p>Vous allez supprimer cette annonce</p>
+                <p>Etes-vous sur?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="" id="btnYes" class="btn danger">Oui</a>
+                <a href="#" data-dismiss="modal" aria-hidden="true" class="btn secondary">Non</a>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+
+        $('#myModal').on('show', function() {
+            var id = $(this).data('id'),
+                removeBtn = $(this).find('.danger');
+
+        })
+
+        $('.confirm-delete').on('click', function(e) {
+            e.preventDefault();
+            var href = $("#reference_delete").attr("href");
+            console.log(href);
+            $('#btnYes').attr("href",href);
+            var id = $(this).data('id');
+            $('#myModal').data('id', id).modal('show');
+        });
+
+        $('#btnYes').click(function() {
+
+            // handle deletion here
+            var id = $('#myModal').data('id');
+            $('[data-id='+id+']').remove();
+            $('#myModal').modal('hide');
+        });
+    </script>
+{% endblock %}

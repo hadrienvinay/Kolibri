@@ -1,12 +1,103 @@
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <div id="page-top">
+     <nav style="margin-bottom: 0; padding-bottom: initial;" class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
+        <div class="container">
+            <div style="margin-right: -6%;" class="nav navbar-top-links navbar-left">
+                <a href="{{ path('ko_main_homepage') }}">
+                    <img style="margin-top: -11%;" src="{{ asset('images/logo_white.png') }}" class="kolibri_logo" >
+                </a>
+            </div>
+            <a class="navbar-brand" href="{{ path('ko_main_homepage') }}">Kolibri</a>
 
-<title>{% block title %}Bienvenue{% endblock %}</title>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto" style="margin: 2%;">
 
-{% block stylesheets %}
-    {# On charge le CSS de bootstrap depuis le site directement #}
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css')}}">
-    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700'>
+                    <li style="list-style-type: none; margin-right: 2em;" class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('ko_main_annonces') }}"><span class="glyphicon glyphicon-list-alt"></span> Annonces</a></li>
 
-{% endblock %}
+                    <li style="list-style-type: none; margin-right: 2em;" class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('ko_main_producers') }}"><span class="glyphicon glyphicon-user"></span> Nos Producteurs</a></li>
+
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <li style="list-style-type: none;margin-right: 2em;" class="nav-item mx-0 mx-lg-1">
+                        <div class="dropdown">
+                            <a style="cursor: pointer;color: #fff;" class="dropdown-toggle " type="button" data-toggle="dropdown">
+                                Mon compte
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a style="color: rgb(24, 188, 156);" href="{{ path('ko_main_profil', {'id': app.user.id } ) }}"><span class="glyphicon glyphicon-send"></span> Mon Profil</a></li>
+                                {% if app.user.type == 2 %}
+                                <li><a style="color: rgb(24, 188, 156);" href="{{ path('ko_main_demandes') }}"><span class="glyphicon glyphicon-signal"></span>Mes Demandes</a></li>
+                                <li><a style="color: rgb(24, 188, 156);" href="{{ path('ko_main_addannonce') }}"><span class="glyphicon glyphicon-plus"></span> Nouvelle Annonce</a></li>
+                                {% endif %}
+
+                                {% if app.user.type == 1 %}
+                                    <li><a style="color: rgb(24, 188, 156);" href="{{ path('ko_main_trajet') }}"><span class="glyphicon glyphicon-signal"></span>Mes Trajets</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </li>
+                        <li style="list-style-type: none;" class="nav-item mx-0 mx-lg-1">
+                            <div class="dropdown">
+                                <a style="cursor: pointer;color: #fff;" class="dropdown-toggle " type="button" data-toggle="dropdown">
+                                    {% set nbNotif = 0 %}
+
+                                    {% for notif in app.user.notificationId %}
+                                        {% if notif.seen == 0 %}
+                                            {%  set nbNotif = nbNotif + 1 %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if nbNotif > 0 %}
+                                    <div style="background-color: lightcoral;margin-left: 73%;padding-left: 21%;margin-right: -60%;border-radius: 49%;">
+                                        {{ nbNotif }}
+                                    </div>
+                                        {% else %}
+                                            <div hidden style="background-color: lightcoral;margin-left: 73%;padding-left: 21%;margin-right: -60%;border-radius: 49%;">
+                                                {{ nbNotif }}
+                                            </div>
+                                        {% endif %}
+
+                                    <span class="glyphicon glyphicon-tags"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    {% if app.user.notificationId is empty %}
+                                    <i style="font-size:10px;"> Aucune Notification </i>
+                                    {% endif %}
+                                    {% for notif in app.user.notificationId %}
+                                        <li>
+                                            <a {% if notif.seen == 0 %} id="notifSeen{{ notif.id }}" data-url="{{ path('seen_notification',{'id' : notif.id}) }}" {% endif %} style="color: rgb(24, 188, 156);{% if notif.seen == 0 %} background-color: #F7E5A1; {% endif %}" href="{{ path( notif.link ) }}">
+                                              <i style="font-size:10px;">{{ notif.message }} le {{ notif.date | date("d/m/Y") }}</i>
+                                            </a>
+                                        </li>
+                                        <script>
+
+                                            $('#notifSeen{{ notif.id }}').on('click', function (e) {
+                                                var notifId = $('#notifSeen{{ notif.id }}').attr('data-url');
+                                                $.ajax({url: notifId,
+                                                    success: function(result){
+                                                        $("#notifSeen{{ notif.id}}").hidden();
+                                                    }});
+                                            });
+                                        </script>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('ko_main_admin') }}"><span class="glyphicon glyphicon-profil"></span> Users</a></li>
+                    {% endif %}
+
+                </ul>
+                <div style="text-align: end; color: white;margin-top: 1%;">
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        Connecté en tant que {{ app.user.username }}
+                        <a class="btn btn-primary btn-md" href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+                    {% else %}
+                        <a class="btn btn-outline btn-success btn-md" style="margin-right: 1em;" href="{{ path('fos_user_registration_register') }}" >Inscription »</a>
+                        <a class="btn btn-outline btn-primary btn-md" href="{{ path('fos_user_security_login') }}">Connexion</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+  </div>
+

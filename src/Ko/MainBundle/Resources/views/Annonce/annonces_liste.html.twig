@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+{% block title %}Kolibri Annonces{% endblock %}
+{% block body %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+        <form class="form-inline margin-center" id="form-trip-search" method="post" style="margin-top: 2em;" action="{{ path('ko_main_annonces') }}">
+            {{ form_errors(form) }}
+            <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-car fa" aria-hidden="true"></i></span>
+                        {{ form_widget(form.depart,{'id' : 'trip-depart'}) }}
+                    </div>
+            </div>
+
+            <div class="form-group">
+                    <div class="input-group">
+                        {{ form_widget(form.arrivee,{'id' : 'trip-depart'}) }}
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <input class="btn btn-default btn-lg btn-block login-button" type="submit" id="trip-submit" name="submit" value="Rechercher"/>
+            </div>
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </form>
+
+
+    <div id="wrapper" style="text-align: center;padding: 2%;" >
+        {% if search != null %}
+            <h3>{{ trips|length }} Résultat(s) pour : {{ search.addressDeparture }} - {{ search.addressArrival }}</h3>
+        {% else %}
+            <h3>{{ trips|length }} Annonces sur le site</h3>
+        {%  endif %}
+        <br>
+        <div id="map" style="height: 300px;width: 100%;"></div>
+        <br>
+        <br>
+        {% for trip in trips %}
+
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="{{ path('ko_main_detail_annonce',{'id': trip.id }) }}" style="display:block;width:100%;height:100%;color: inherit;text-decoration: none;">
+                        <h3 class="panel-title">{{ trip.typeProduct }}</h3>
+                        <p> {{ trip.addressDeparture }} - {{ trip.addressArrival }} </p>
+                        <p> {{ trip.dateBegin | date("d M") }} - {{ trip.dateBegin | date('H \\h i') }} </p>
+                        <p> {{ trip.dateEnd | date("d M") }} - {{ trip.dateEnd | date('H \\h i') }} </p>
+                        </a>
+                    </div>
+                    <div class="panel-body">
+                        <div class="author-desc">
+                            Annonce proposée par :<a href="{{ path('ko_main_profil', {'id' : trip.producerId.userId.id}) }}">{{ trip.producerId.userId.firstName }}</a>
+                        </div>
+
+                        <p> {{ trip.description }}</p>
+
+                        {% if trip.sizeCar == 0 %}
+                            <img src="{{ asset("images/carSize0.png") }}" class="img-responsive car-size-img">
+
+                        {% elseif trip.sizeCar == 1 %}
+                            <img src="{{ asset( "images/carSize1.png" ) }}" class="img-responsive car-size-img">
+
+                        {% elseif trip.sizeCar == 2 %}
+                            <img src="{{ asset( "images/carSize2.png" ) }}" class="img-responsive car-size-img">
+
+                        {% else %}
+                            <img src="{{ asset( "images/carSizeDefault.png" ) }}" class="img-responsive car-size-img">
+
+                        {% endif %}
+
+                        {% set alreadyProposed = false %}
+
+                        {% for proposal in listProposals %}
+
+                            {% if proposal.tripId.id == trip.id %}
+                                {% set alreadyProposed = true %}
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if alreadyProposed == true %}
+                            <a href="{{ path('ko_main_delete_annonce', {'id' : trip.id}) }}" class="btn btn-outline btn-primary btn-lg btn">Annuler</a>
+
+                        {% else %}
+                            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                                <a href="{{ path('ko_main_apply_for_annonce', {'id' : trip.id}) }}" class="btn btn-outline btn-primary btn-lg ">Valider</a>
+                            {% else %}
+                                <a href="{{ path('fos_user_security_login') }}" class="btn btn-outline btn-primary btn-lg btn">Valider</a>
+                            {% endif %}
+                        {% endif %}
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+
+
+    <script>
+        function initMap() {
+            var depart = {lat: 46 , lng: 2 };
+            var i = 0;
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: depart
+            });
+            {% for trip in trips %}
+console.log({{ loop.index }});
+                var lat ={{ trip.latitudeStart }};
+                var long ={{ trip.longitudeStart }};
+                    var newPos = {lat: lat , lng: long };
+
+                    var markerDepart = new google.maps.Marker({
+                        position: newPos,
+                        map: map
+                    });
+
+            {% endfor %}
+
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGumVlc4KEBNmAwrso9w5faYMf62JXLBU&callback=initMap">
+    </script>
+
+{% endblock %}

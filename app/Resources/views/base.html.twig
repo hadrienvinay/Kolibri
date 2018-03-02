@@ -2,17 +2,99 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Kolibri{% endblock %}</title>
         {% block stylesheets %}
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <!-- Custom fonts for this template -->
+            <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+            <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+            <!-- Plugin CSS -->
+
+            <!-- Custom styles for this template -->
+            <link href="{{ asset('css/freelancer.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+            <link href="{{ asset ('css/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet">
+
         {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     </head>
-    <body>
-        {% block body %}
 
+    <body>
+        {% include 'header.html.twig' %}
+        {% block fos_user_content %}{% endblock %}
+
+
+        {% block body %}{% endblock %}
+
+
+        {% block footer %}
+            <!-- Footer -->
+            <div id="footer" class="col-lg-12" style="position: inherit;bottom: 0; padding: 0;">
+            <footer class="footer text-center" style="padding: 0;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 mb-5 mb-lg-0">
+                            <h4 class="text-uppercase mb-4">Contact</h4>
+                            <p class="lead mb-0">kolibri@kolibri.kolibri
+                            </p>
+                        </div>
+                        <div class="col-md-6 mb-5 mb-lg-0">
+                            <h4 class="text-uppercase mb-4">Retrouvez-nous sur</h4>
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item">
+                                    <a class="btn btn-outline-light btn-social text-center rounded-circle" href="#">
+                                        <i class="fa fa-fw fa-facebook fa-2x"></i>
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="btn btn-outline-light btn-social text-center rounded-circle" href="#">
+                                        <i class="fa fa-fw fa-google-plus fa-2x"></i>
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="btn btn-outline-light btn-social text-center rounded-circle" href="#">
+                                        <i class="fa fa-twitter fa-2x"></i>
+                                    </a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </footer>
+            <div class="copyright py-4 text-center text-white">
+                <div class="container" style="color: #FFFFFF;">
+                    <small>Site web réalisé par Hadrien Vinay, Léo Delval, Etienne Meunier, Grégoire Delaporte Copyright &copy; Kolibri</small>
+                </div>
+            </div>
+            </div>
+        {% endblock %}
+        {% block javascripts %}
+
+            <!-- Contact Form JavaScript -->
+            <script src="{{ asset('js/jqBootstrapValidation.js') }}"></script>
+            <script src="{{ asset('js/contact_me.js')}}"></script>
+
+            <!-- Custom scripts for this template -->
+            <script src="{{ asset('js/freelancer.min.js')}}"></script>
+            <script src="{{ asset('js/script.js')}}"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <script>
+                var footer = $("#footer");
+                var position = footer.position();
+                if(position.top < 550) {
+                  //  $("#footer").text("left: " + position.left + ", top: " + position.top);
+                    $("#footer").css("position","absolute");
+                }
+            </script>
         {% endblock %}
 
-        {% block javascripts %}{% endblock %}
+
     </body>
 </html>

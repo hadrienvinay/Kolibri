@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block title %}Kolibri Producteurs{% endblock %}
+
+{% block body %}
+    <div id="wrapper" style="text-align: center;padding: 2%;" >
+        <h1>Listes Producteurs :</h1>
+
+        {% for producer in producers %}
+
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Producteur</h3>
+                        <p> {{ producer.userId.firstName }}  {{ producer.userId.lastName }} </p>
+                        <p> {{ producer.id }}  </p>
+
+                    </div>
+                    <div class="panel-body">
+                        <a href="{{ path('ko_main_profil',{'id' : producer.userId.id}) }}" class="btn btn-outline btn-primary btn-lg">Profil</a>
+                    </div>
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+{% endblock %}

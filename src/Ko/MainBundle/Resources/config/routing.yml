@@ -1,0 +1,67 @@
+ko_main_homepage:
+    path:     /
+    defaults: { _controller: KoMainBundle:Affichage:home }
+
+ko_main_annonces:
+    path:     /annonces
+    defaults: { _controller: KoMainBundle:Annonce:annonces }
+
+ko_main_demandes:
+    path:     /producteur/demandes
+    defaults: { _controller: KoMainBundle:Annonce:demandes }
+
+ko_main_trajet:
+    path:     /trajet
+    defaults: { _controller: KoMainBundle:Trajet:trajet }
+
+ko_main_demandes_confirm:
+    path:     /livraison
+    defaults: { _controller: KoMainBundle:Annonce:livraison }
+
+ko_main_producers:
+    path:     /producteurs
+    defaults: { _controller: KoMainBundle:Producteur:producteurs }
+
+ko_main_addannonce:
+    path:     /producteur/addAnnonce
+    defaults: { _controller: KoMainBundle:Annonce:addAnnonce }
+
+ko_main_detail_annonce:
+    path:     /annonce/{id}
+    defaults: { _controller: KoMainBundle:Annonce:detailAnnonce }
+
+ko_main_editannonce:
+    path:     /producteur/editAnnonce/{id}
+    defaults: { _controller: KoMainBundle:Annonce:editAnnonce }
+
+ko_main_deleteannonce:
+    path:     /producteur/deleteAnnonce/{id}
+    defaults: { _controller: KoMainBundle:Annonce:deleteAnnonce }
+
+ko_main_profil:
+    path:     /profil/{id}
+    defaults: { _controller: KoMainBundle:Profil:profil }
+
+ko_main_profiledit:
+    path:     /profil_edit/{id}
+    defaults: { _controller: KoMainBundle:Profil:profiledit }
+
+ko_main_apply_for_annonce:
+    path:     /apply/{id}
+    defaults: { _controller: KoMainBundle:Annonce:apply }
+
+ko_main_delete_annonce:
+    path:     /deleteProposal/{id}
+    defaults: { _controller: KoMainBundle:Annonce:delete }
+
+ko_main_valid_proposal:
+    path:     /valid_proposal/{id}
+    defaults: { _controller: KoMainBundle:Annonce:validProposal }
+
+ko_main_contact:
+    path:     /contact/{id}
+    defaults: { _controller: KoMainBundle:Contact:contact }
+
+ko_main_admin:
+    path:     /admin
+    defaults: { _controller: KoMainBundle:Affichage:admin }

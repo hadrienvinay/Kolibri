@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+{% block title %}Kolibri Contact{% endblock %}
+
+{% block body %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <h2> Confirmer votre trajet </h2>
+
+            <div class="col-lg-6 well">
+                <h3 class="panel-title">{{ proposal.tripId.typeProduct }}</h3>
+
+                <p>  {% if proposal.tripId.sizeCar == 0 %}
+                        <img src="{{ asset("images/carSize0.png") }}" class="img-responsive car-size-img float-right">
+
+                    {% elseif proposal.tripId.sizeCar == 1 %}
+                        <img src="{{ asset( "images/carSize1.png" ) }}" class="img-responsive car-size-img float-right">
+
+                    {% elseif proposal.tripId.sizeCar == 2 %}
+                        <img src="{{ asset( "images/carSize2.png" ) }}" class="img-responsive car-size-img float-right">
+
+                    {% else %}
+                        <img src="{{ asset( "images/carSizeDefault.png" ) }}" class="img-responsive car-size-img float-right">
+
+                    {% endif %}
+                </p>
+                <p> {{ proposal.tripId.addressDeparture }} - {{ proposal.tripId.addressArrival }} </p>
+                <p> {{ proposal.tripId.dateBegin | date("d M") }} - {{ proposal.tripId.dateBegin | date('H \\h i') }} </p>
+                <p> {{ proposal.tripId.dateEnd | date("d M") }} - {{ proposal.tripId.dateEnd | date('H \\h i') }} </p>
+
+                {% if user.type == 1 %}
+                    <a class="btn btn-primary" href="{{ path('ko_main_delete_annonce',{'id' : proposal.tripId.id}) }}"> Annuler ce trajet</a>
+                {% endif %}
+
+            </div>
+
+    <div class="col-lg-6 well">
+    {% if user.type == 1 %}
+        <h3 class="panel-title"> Discutez avec {{ proposal.tripId.producerId.userId.firstName }}</h3>
+    {% else %}
+        <h3 class="panel-title"> Discutez avec {{ proposal.driverId.userId.firstName }}</h3>
+    {% endif %}
+        {% for message in proposal.messageId %}
+       <div class="">
+           {{ message.message }}
+           <strong>de {{ message.senderId.firstName }}</strong>
+           <i>à {{ message.date | date('H \\h i') }}
+           le {{ message.date | date('d/m') }}</i>
+       </div>
+        {% endfor %}
+        <div class="form-control" style="margin-top: 2%;">
+        {{ form(form) }}
+        </div>
+    </div>
+
+    <div class="col-lg-6 well">
+        <h3 class="panel-title"> Proposez une date de livraison</h3>
+        {% if proposal.date != null %}
+          <strong> Date Proposée :  {{ proposal.date | date("d/m/Y") }} à {{ proposal.date | date('H \\h i') }} </strong>
+        {% endif %}
+        <div class="form-control" style="margin-top: 2%;">
+        {{ form(formDate) }}
+        </div>
+    </div>
+
+    <div class="col-lg-6 well">
+        <div id="map" style="height: 300px;width: 100%;"></div>
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+    <script>
+        jQuery(document).ready(function() {
+            $('.js-datepicker').datepicker();
+            initMap();
+        });
+        function initMap() {
+            var depart = {lat: {{ latitudeDepart }}, lng: {{ longitudeDepart }} };
+            var arrivee = {lat: {{ latitudeArrivee }}, lng: {{ longitudeArrivee }} };
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: depart
+            });
+            var markerDepart = new google.maps.Marker({
+                position: depart,
+                map: map
+            });
+            var markerArrivee = new google.maps.Marker({
+                position: arrivee,
+                map: map
+            });
+
+        }
+
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGumVlc4KEBNmAwrso9w5faYMf62JXLBU&callback=initMap">
+    </script>
+{% endblock %}

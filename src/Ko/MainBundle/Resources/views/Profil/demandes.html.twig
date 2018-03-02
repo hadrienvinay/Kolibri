@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+{% block title %}Kolibri Mes demandes{% endblock %}
+{% block body %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <h2>Vos Propositions de livraisons :</h2><br><br>
+    {% if trips is empty %}
+        <h4 class="jumbotron-heading margin-center">Aucune annonce postée pour le moment
+            <br>
+            <a href="{{ path('ko_main_addannonce') }}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Nouvelle Annonce</a></h4>
+    {% else %}
+    <div class="col-lg-8 well">
+    {%  for trip in trips %}
+
+        <h3 class="panel-title">{{ trip.typeProduct }}</h3>
+
+        <a id="reference_delete" href="{{ path('ko_main_deleteannonce', {'id': trip.id}) }}" class="" data-id="{{ loop.index }}" data-value="{{ trip.id }}"><button class="confirm-delete btn btn-danger"  style="float: right;"><span class="glyphicon glyphicon-remove"></span></button></a>
+        <a href="{{ path('ko_main_editannonce', {'id': trip.id}) }}"><button class="btn btn-warning" style="float: right; margin-right: 1%;"><span class="glyphicon glyphicon-pencil"></span></button></a>
+
+        <p>  {% if trip.sizeCar == 0 %}
+                <img src="{{ asset("images/carSize0.png") }}" class="img-responsive car-size-img float-right">
+
+            {% elseif trip.sizeCar == 1 %}
+                <img src="{{ asset( "images/carSize1.png" ) }}" class="img-responsive car-size-img float-right">
+
+            {% elseif trip.sizeCar == 2 %}
+                <img src="{{ asset( "images/carSize2.png" ) }}" class="img-responsive car-size-img float-right">
+
+            {% else %}
+                <img src="{{ asset( "images/carSizeDefault.png" ) }}" class="img-responsive car-size-img float-right">
+
+            {% endif %}
+        </p>
+        <p> {{ trip.addressDeparture }} - {{ trip.addressArrival }} </p>
+        <p> {{ trip.dateBegin | date("d M") }} - {{ trip.dateBegin | date('H \\h i') }} </p>
+        <p> {{ trip.dateEnd | date("d M") }} - {{ trip.dateEnd | date('H \\h i') }} </p>
+        <details>
+       {% if proposals[trip.id] == null %}
+            No proposal for this trip yet
+       {% else %}
+           {%  for proposal in proposals[trip.id] %}
+              <div class="well">
+                  <a href="{{ path('ko_main_profil',{ 'id' : proposal.driverId.userId.id }) }}">driver n°:{{ proposal.driverId.id}}  -- {{ proposal.driverId.userId.firstName }}  -- {{ proposal.driverId.userId.lastName }} </a>
+                  {% if proposal.accepted == 0 %}
+                  <a href="{{ path('ko_main_valid_proposal', {'id' : proposal.id}) }}" class="btn btn-outline btn-primary btn-lg">Valider ce trajet</a>
+                  {% else %}
+                      <div>
+                          Annonce Validée
+                          <a href="{{ path('ko_main_contact', {'id' : proposal.id}) }}" class="btn btn-primary">Entrer en contact avec le conducteur</a>
+                      </div>
+                  {% endif %}
+                      </div>
+           {% endfor %}
+       {% endif %}
+        </details><br> <br>
+    {% endfor %}
+        {% endif %}
+    </div>
+
+    <div id="myModal" class="modal panel" style="margin-right: 25%;margin-left: 25%;margin-top: 12%;margin-bottom: 15%;">
+        <div class="modal-header">
+            <a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
+            <h3>Supprimer</h3>
+        </div>
+        <div class="modal-body">
+            <p>Vous allez supprimer cette annonce</p>
+            <p>Etes-vous sur?</p>
+        </div>
+        <div class="modal-footer">
+            <a href="" id="btnYes" class="btn danger">Oui</a>
+            <a href="#" data-dismiss="modal" aria-hidden="true" class="btn secondary">Non</a>
+        </div>
+    </div>
+
+
+    <script>
+
+        $('#myModal').on('show', function() {
+            var id = $(this).data('id'),
+                removeBtn = $(this).find('.danger');
+
+        })
+
+        $('.confirm-delete').on('click', function(e) {
+            e.preventDefault();
+            var href = $("#reference_delete").attr("href");
+            $('#btnYes').attr("href",href);
+            var id = $(this).data('id');
+            $('#myModal').data('id', id).modal('show');
+        });
+
+        $('#btnYes').click(function() {
+
+            // handle deletion here
+            var id = $('#myModal').data('id');
+            $('[data-id='+id+']').remove();
+            $('#myModal').modal('hide');
+        });
+    </script>
+
+{% endblock %}

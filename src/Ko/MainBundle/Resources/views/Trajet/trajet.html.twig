@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <h2>Vos Demandes de Trajets</h2><br><br>
+    {% if proposals is empty %}
+    <h4 class="jumbotron-heading margin-center">Aucune trajet demandé pour le moment
+        <br>
+        <a href="{{ path('ko_main_annonces') }}"><span class="glyphicon glyphicon-find" aria-hidden="true"></span>Recherchez des annonces</a></h4>
+    {% else %}
+        {%  for proposal in proposals %}
+            <div class="col-lg-8 well">
+                <a href="{{ path('ko_main_detail_annonce',{'id': proposal.tripId.id }) }}" style="display:block;width:100%;height:100%;color: inherit;text-decoration: none;">
+
+                <h3 class="panel-title">{{ proposal.tripId.typeProduct }}</h3>
+
+                <p>  {% if proposal.tripId.sizeCar == 0 %}
+                        <img src="{{ asset("images/carSize0.png") }}" class="img-responsive car-size-img float-right">
+
+                    {% elseif proposal.tripId.sizeCar == 1 %}
+                        <img src="{{ asset( "images/carSize1.png" ) }}" class="img-responsive car-size-img float-right">
+
+                    {% elseif proposal.tripId.sizeCar == 2 %}
+                        <img src="{{ asset( "images/carSize2.png" ) }}" class="img-responsive car-size-img float-right">
+
+                    {% else %}
+                        <img src="{{ asset( "images/carSizeDefault.png" ) }}" class="img-responsive car-size-img float-right">
+
+                    {% endif %}
+                </p>
+                <p> {{ proposal.tripId.addressDeparture }} - {{ proposal.tripId.addressArrival }} </p>
+                <p> {{ proposal.tripId.dateBegin | date("d M") }} - {{ proposal.tripId.dateBegin | date('H \\h i') }} </p>
+                <p> {{ proposal.tripId.dateEnd | date("d M") }} - {{ proposal.tripId.dateEnd | date('H \\h i') }} </p>
+
+                <a class="btn btn-primary" href="{{ path('ko_main_delete_annonce',{'id' : proposal.tripId.id}) }}"> Annuler ce trajet</a>
+                {% if proposal.accepted == 1 %}
+                <p> Votre trajet a été validé par le producteur</p>
+                    <a class="btn btn-primary" href="{{ path('ko_main_contact',{'id' : proposal.id}) }}">Entrer en contact avec le producteur</a>
+                {% else %}
+                <p>Votre trajet n'as pas encore été validé par le producteur </p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        {% endif %}
+
+    <div id="myModal" class="modal panel" style="margin-right: 25%;margin-left: 25%;margin-top: 12%;margin-bottom: 15%;">
+        <div class="modal-header">
+            <a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
+            <h3>Supprimer</h3>
+        </div>
+        <div class="modal-body">
+            <p>Vous allez supprimer cette annonce</p>
+            <p>Etes-vous sur?</p>
+        </div>
+        <div class="modal-footer">
+            <a href="" id="btnYes" class="btn danger">Oui</a>
+            <a href="#" data-dismiss="modal" aria-hidden="true" class="btn secondary">Non</a>
+        </div>
+    </div>
+
+
+    <script>
+
+        $('#myModal').on('show', function() {
+            var id = $(this).data('id'),
+                removeBtn = $(this).find('.danger');
+
+        })
+
+        $('.confirm-delete').on('click', function(e) {
+            e.preventDefault();
+            var href = $("#reference_delete").attr("href");
+            console.log(href);
+            $('#btnYes').attr("href",href);
+            var id = $(this).data('id');
+            $('#myModal').data('id', id).modal('show');
+        });
+
+        $('#btnYes').click(function() {
+
+            // handle deletion here
+            var id = $('#myModal').data('id');
+            $('[data-id='+id+']').remove();
+            $('#myModal').modal('hide');
+        });
+    </script>
+
+{% endblock %}

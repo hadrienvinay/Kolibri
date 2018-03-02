@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+{% block title %}Kolibri Annonce {{ trip.id }}{% endblock %}
+{% block body %}
+
+    <div id="wrapper" style="text-align: center;padding: 2%;" >
+
+
+            <div class="col-lg-10" style="margin-left: 7%;">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+                            {% if app.user.id == trip.producerId.userId.id %}
+                                <a id="reference_delete" href="{{ path('ko_main_deleteannonce', {'id': trip.id}) }}" class="" data-id="1" data-value="{{ trip.id }}"><button class="confirm-delete btn btn-danger"  style="float: right;"><span class="glyphicon glyphicon-remove"></span></button></a>
+                                <a href="{{ path('ko_main_editannonce', {'id': trip.id}) }}"><button class="btn btn-warning" style="float: right; margin-right: 1%;"><span class="glyphicon glyphicon-pencil"></span></button></a>
+                            {% endif %}
+                        {% endif %}
+                        <h3 class="panel-title">{{ trip.typeProduct }}</h3>
+                        <p> {{ trip.addressDeparture }} - {{ trip.addressArrival }} </p>
+                        <p> {{ trip.dateBegin | date("d M") }} - {{ trip.dateBegin | date('H \\h i') }} </p>
+                        <p> {{ trip.dateEnd | date("d M") }} - {{ trip.dateEnd | date('H \\h i') }} </p>
+
+                    </div>
+                    <div class="panel-body">
+                        <div class="author-desc">
+                            Annonce proposée par :<a href="{{ path('ko_main_profil', {'id' : trip.producerId.userId.id}) }}">{{ trip.producerId.userId.firstName }}</a>
+                        </div>
+
+                        <p> {{ trip.description }}</p>
+
+                        {% if trip.sizeCar == 0 %}
+                            <img src="{{ asset("images/carSize0.png") }}" class="img-responsive car-size-img">
+
+                        {% elseif trip.sizeCar == 1 %}
+                            <img src="{{ asset( "images/carSize1.png" ) }}" class="img-responsive car-size-img">
+
+                        {% elseif trip.sizeCar == 2 %}
+                            <img src="{{ asset( "images/carSize2.png" ) }}" class="img-responsive car-size-img">
+
+                        {% else %}
+                            <img src="{{ asset( "images/carSizeDefault.png" ) }}" class="img-responsive car-size-img">
+
+                        {% endif %}
+
+                        <div id="map" style="height: 300px;width: 100%;"></div>
+                        <br>
+                        <br>
+
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            {% set alreadyProposed = false %}
+                            {% for proposal in trip.proposalId %}
+                                {% if proposal.driverId.userId.id == app.user.id %}
+                                    {% set alreadyProposed = true %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if alreadyProposed == true %}
+                                <a href="{{ path('ko_main_delete_annonce', {'id' : trip.id}) }}" class="btn btn-outline btn-primary btn-lg btn">Annuler ma proposition</a>
+                            {% else %}
+                                <a href="{{ path('ko_main_apply_for_annonce', {'id' : trip.id}) }}" class="btn btn-outline btn-primary btn-lg ">Valider cette annonce</a>
+
+                            {% endif %}
+                            {% else %}
+                            <a href="{{ path('fos_user_security_login') }}" class="btn btn-outline btn-primary btn-lg btn">Valider cette annonce</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+
+
+    </div>
+
+    <script>
+        jQuery(document).ready(function() {
+            initMap();
+        });
+        function initMap() {
+            var depart = {lat: {{ latitudeDepart }}, lng: {{ longitudeDepart }} };
+            var arrivee = {lat: {{ latitudeArrivee }}, lng: {{ longitudeArrivee }} };
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: depart
+            });
+
+            var markerDepart = new google.maps.Marker({
+                position: depart,
+                map: map
+            });
+            var markerArrivee = new google.maps.Marker({
+                position: arrivee,
+                map: map
+            });
+
+        }
+
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGumVlc4KEBNmAwrso9w5faYMf62JXLBU&callback=initMap">
+    </script>
+{% endblock %}

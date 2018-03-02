@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block title %}Kolibri Annonces{% endblock %}
+
+{% block body %}
+
+    <h3>
+        <a class="btn btn-default" style="float: left; margin-left: 5%;margin-right: 25%;" href="{{ path('ko_main_profil',{ 'id' : user.id }) }}"><span class="glyphicon glyphicon-arrow-left"> </span>  Retour au Profil</a>
+        Ajouter une annonce
+    </h3>
+
+    <div class="well" style="margin:5%;margin-top: 1%;">
+        {{ form(form) }}
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+    <script>
+        jQuery(document).ready(function() {
+            $('.js-datepicker').datepicker();
+        });
+    </script>
+    {% block javascripts %}
+        {{ parent() }}
+        {{ ivory_google_api([
+        form.addressDeparture.vars['autocomplete'],
+        form.addressArrival.vars['autocomplete']
+        ]) }}
+    {% endblock %}
+{% endblock %}

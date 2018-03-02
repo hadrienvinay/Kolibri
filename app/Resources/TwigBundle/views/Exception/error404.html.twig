@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="well" style="text-align: center;">
+        <h1>Oooooops</h1>
+        <h2>The server returned a "{{ status_code }} {{ status_text }}".</h2>
+        <div>
+          Désolé la page demandée n'existe pas : erreur 404
+            <br>
+            <a href="{{ path('ko_main_homepage') }}" class="btn btn-primary">  Retourner à l'acceuil </a>
+        </div>
+    </div>
+{% endblock %}

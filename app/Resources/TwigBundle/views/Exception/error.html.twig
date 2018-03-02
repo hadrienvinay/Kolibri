@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="well" style="text-align: center;">
+        <h1>Oups une erreur s'est produite</h1>
+        <h2>Le serveur retourne un erreur "{{ status_code }} {{ status_text }}".</h2>
+
+        {% if status_code == 500 %}
+            <div>
+               Nous sommes actuellement en maintenance, nous préparons les bons produits des producteurs :)
+            </div>
+        {% else %}
+            <div>
+                Nous sommes actuellement en maintenance, nous préparons les bons produits des producteurs :)
+            </div>
+        {% endif %}
+
+        <a href="{{ path('ko_main_homepage') }}" class="btn btn-primary">  Retourner à l'acceuil </a>
+    </div>
+
+{% endblock %}
